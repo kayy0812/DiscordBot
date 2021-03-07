@@ -1,0 +1,20 @@
+{
+  "name": "discordbot",
+  "version": "1.0.0",
+  "description": "A Discord BOT!",
+  "main": "index.js",
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "ffmpeg-static": "^4.2.7",
+    "events": "^3.2.0",
+    "simsimi": "^3.0.0",
+    "os": "^0.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "pm2 start index.js --name  --watch"
+  },
+  "author": "VanLoc",
+  "license": "ISC"
+}
