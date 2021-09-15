@@ -1,8 +1,6 @@
 {
-	"discord_token": "ODA2MTIzNzcxNjgxMDQ2NTY5.YBk3RA.EzPJ4WtAc2vVccrcheHNdvfO_so",
-	"simsimi_license_key": "gtOr4yCLbyINO4qDoG6ud1RimKbOm.qvu-C4kVy1",
+	"discord_token": "ODg3MzYwMjc4MzQwMjA2NjQz.YUDAqA.yaxttXV_Rajs7mFcREm3yaESxJQ",
 	"sim_prefix": "!sim",
-	"bot_prefix": "!bot",
 	"music_prefix": "!music",
-	"music_channel_name": "music_relax"
+	"music_channel_name": "Music"
 }
