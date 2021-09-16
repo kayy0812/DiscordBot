@@ -65,12 +65,11 @@ bot.on("message", async message => {
                 return true;
             }
             serverQueue.songs.push(song);
-            message.channel.send('🎶 Đã thêm vào danh sách chờ: `' + song.title + '`');
+            message.channel.send('🎶 Đã yêu cầu: `' + song.title + '` 🎶');
         }
 
         if (command === 'stop') {
             if (!serverQueue) {
-                message.reply('Không thể dừng lại!');
                 return false;
             }
             serverQueue.songs = [];
@@ -79,16 +78,14 @@ bot.on("message", async message => {
 
         if (command === 'next') {
             if (!serverQueue) {
-                message.reply('Không thể next lúc này!');
                 return false;
             }
             serverQueue.connection.dispatcher.end();
-            message.channel.send('🎶 Đang dừng: `' + serverQueue.songs[0].title + '`');
+            message.reply('⏸ Đang dừng: `' + serverQueue.songs[0].title + '` ⏸');
         }
 
         if (command === 'pause') {
             if (!serverQueue) {
-                message.reply('Không thể tạm dừng!');
                 return false;
             }
             serverQueue.connection.dispatcher.pause();
@@ -96,7 +93,6 @@ bot.on("message", async message => {
 
         if (command === 'resume') {
             if (!serverQueue) {
-                message.reply('Không thể tiếp tục!');
                 return false;
             }
             serverQueue.connection.dispatcher.resume();
@@ -104,21 +100,20 @@ bot.on("message", async message => {
         
         if (command === 'loop') {
             if (!serverQueue) {
-                message.reply('Không thể lặp lại!');
                 return false;
             }
             if (serverQueue.repeat) {
                 serverQueue.repeat = false;
-                message.reply('🎶 Tắt lặp: `' + serverQueue.songs[0].title + '`');
+                message.reply('➿ Tắt lặp: `' + serverQueue.songs[0].title + '` ➿');
                 return true;
             }
             serverQueue.repeat = true;
-            message.reply('🎶 Bật lặp: `' + serverQueue.songs[0].title + '`');
+            message.reply('➿ Bật lặp: `' + serverQueue.songs[0].title + '` ➿');
         }
 
         if (command === 'queue') {
             if (!serverQueue) {
-                message.reply('e!add 3595-failed Hiện danh sách trống! e!add 3595-failed');
+                message.reply('🎼 Hiện danh sách trống! 🎼');
                 return false;
             }
             let result = serverQueue.songs.map((song, i) => {
@@ -135,7 +130,7 @@ async function playSong(message) {
     if (serverQueue.songs.length < 1) {
         serverQueue.voiceChannel.leave();
         queues.delete(message.guild.id);
-        message.channel.send("Hết nhạc!");
+        message.channel.send("⏹ Hết dữ liệu yêu cầu" ⏹);
         return true;
     }
     let song = serverQueue.songs[0];
