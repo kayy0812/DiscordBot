@@ -130,7 +130,7 @@ async function playSong(message) {
     if (serverQueue.songs.length < 1) {
         serverQueue.voiceChannel.leave();
         queues.delete(message.guild.id);
-        message.channel.send("⏹ Hết dữ liệu yêu cầu" ⏹);
+        message.channel.send("⏹ Hết dữ liệu yêu cầu ⏹");
         return true;
     }
     let song = serverQueue.songs[0];
