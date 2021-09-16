@@ -29,21 +29,25 @@ class Song {
 bot.on("message", async message => {
 
     // Youtube MP3
-    if (message.content.startsWith(config.music_prefix)) {
-        const args = message.content.slice(config.music_prefix.length).trim().split(/ +/);
+    if (message.content.startsWith(config.musicPrefix)) {
+        const args = message.content.slice(config.musicPrefix.length).trim().split(/ +/);
         const command = args[0].toLowerCase();
         let serverQueue = queues.get(message.guild.id);
         if (command === 'play') {
             let voiceChannel = message.member.voice.channel;
-            if (!voiceChannel || voiceChannel.name !== config.music_channel_name) {
-                message.reply('Vào kênh `🎶' + config.music_channel_name + '🎶` để có thể nghe nhạc!');
+            if (!voiceChannel || voiceChannel.name !== config.musicChannelName) {
+                message.reply('Vào kênh `🎶' + config.musicChannelName + '🎶` để có thể nghe nhạc!');
                 return false;
             }
+
             let permissions = voiceChannel.permissionsFor(message.client.user);
-            if (!permissions.has('CONNECT') || !permissions.has('SPEAK')) {
-                message.reply('Chưa cấp quyền vào kênh phát này!');
-                return false;
+            for (var value of config.musicChannelPerms) {
+                if (!permissions.has(value)) {
+                    message.reply('Chưa cấp quyền `' + value + '` vào kênh phát này!');
+                    return false;
+                }
             }
+
             let url = args.slice(1).join(' ');
             let video = await ytdl.getInfo(url);
             if (!video) {
@@ -135,12 +139,13 @@ async function playSong(message) {
         return true;
     }
     let song = serverQueue.songs[0];
-    let dispatcher = serverQueue.connection.play(ytdl(song.url, {
-        filter: 'audioonly',
+    let audio = ytdl(song.url, {
+        quality: 'highestaudio',
         highWaterMark: 1024 * 1024 * 12
-    }));
+    });
+    let dispatcher = serverQueue.connection.play(audio);
     dispatcher.setVolume(serverQueue.volume / 100);
-    message.channel.send('🎶 Đang phát: `' + song.title + '`');
+    message.channel.send('🎶 Starting: `' + song.title + '`');
     dispatcher.on('finish', () => {
         if (!serverQueue.repeat) serverQueue.songs.shift();
         playSong(message);

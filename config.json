@@ -1,6 +1,10 @@
 {
 	"discord_token": "",
 	"sim_prefix": "!sim",
-	"music_prefix": "!music",
-	"music_channel_name": "Music"
+	"musicPrefix": "!music",
+	"musicChannelName": "Music",
+	"musicChannelPerms": [
+		"SPEAK",
+		"CONNECT"
+	]
 }
