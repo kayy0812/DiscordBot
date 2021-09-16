@@ -143,7 +143,6 @@ async function playSong(message) {
     let playing = await message.channel.send('🎧 **Đang phát:** __' + song.title + '__ 🎧');
     dispatcher.on('finish', () => {
         if (!serverQueue.repeat) serverQueue.songs.shift();
-        playing.edit('Da dung lai')
         playSong(message);
         return true;
     });
