@@ -117,7 +117,7 @@ bot.on("message", async message => {
                 return false;
             }
             let result = serverQueue.songs.map((song, i) => {
-                return `${(i == 0) ? `🎧**Đang phát:** __` : `${i}.`} ${song.title}__ 🎧`
+                return `${(i == 0) ? `\n🎧 **Đang phát:** __` : `🎧 **${i}.** __`} ${song.title}__ 🎧`
             }).join('\n');
             message.reply(result);
         }
@@ -140,7 +140,7 @@ async function playSong(message) {
     });
     let dispatcher = serverQueue.connection.play(audio);
     dispatcher.setVolume(serverQueue.volume / 100);
-    message.channel.send('🎧 **Đang phát:** `__' + song.title + '__` 🎧');
+    message.channel.send('🎧 **Đang phát:** __`' + song.title + '`__ 🎧');
     dispatcher.on('finish', () => {
         if (!serverQueue.repeat) serverQueue.songs.shift();
         playSong(message);
