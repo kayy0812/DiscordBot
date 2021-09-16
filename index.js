@@ -140,9 +140,10 @@ async function playSong(message) {
     });
     let dispatcher = serverQueue.connection.play(audio);
     dispatcher.setVolume(serverQueue.volume / 100);
-    message.channel.send('🎧 **Đang phát:** __`' + song.title + '`__ 🎧');
+    let playing = await message.channel.send('🎧 **Đang phát:** __' + song.title + '__ 🎧');
     dispatcher.on('finish', () => {
         if (!serverQueue.repeat) serverQueue.songs.shift();
+        playing.edit('Da dung lai')
         playSong(message);
         return true;
     });
