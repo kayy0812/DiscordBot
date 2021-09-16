@@ -109,11 +109,11 @@ bot.on("message", async message => {
             }
             if (serverQueue.repeat) {
                 serverQueue.repeat = false;
-                message.channel.send('🎶 Tắt lặp: `' + serverQueue.songs[0].title + '`');
+                message.reply('🎶 Tắt lặp: `' + serverQueue.songs[0].title + '`');
                 return true;
             }
             serverQueue.repeat = true;
-            message.channel.send('🎶 Bật lặp: `' + serverQueue.songs[0].title + '`');
+            message.reply('🎶 Bật lặp: `' + serverQueue.songs[0].title + '`');
         }
 
         if (command === 'queue') {
@@ -122,7 +122,7 @@ bot.on("message", async message => {
                 return false;
             }
             let result = serverQueue.songs.map((song, i) => {
-                return `${(i == 0) ? `\`🎶 Đang phát:\`` : `${i}.`} ${song.title} 🎶`
+                return `${(i == 0) ? `\`🎧\`` : `${i}.`} ${song.title} 🎧 \n ⇆ㅤㅤㅤㅤ◁ㅤㅤ❚❚ㅤㅤ▷ㅤㅤㅤㅤ↻`
             }).join('\n');
             message.channel.send(result);
         }
@@ -145,7 +145,7 @@ async function playSong(message) {
     });
     let dispatcher = serverQueue.connection.play(audio);
     dispatcher.setVolume(serverQueue.volume / 100);
-    message.channel.send('🎶 Đang phát: `' + song.title + '` 🎶');
+    message.channel.send('🎧 Đang phát: `' + song.title + '` 🎧');
     dispatcher.on('finish', () => {
         if (!serverQueue.repeat) serverQueue.songs.shift();
         playSong(message);
