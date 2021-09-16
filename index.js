@@ -51,7 +51,7 @@ bot.on("message", async message => {
             let url = args.slice(1).join(' ');
             let video = await ytdl.getInfo(url);
             if (!video) {
-                message.reply('Url không hợp lệ!');
+                message.reply('Nhập chính xác đường dẫn!');
                 return false;
             }
             const song = new Song(video.videoDetails.title, video.videoDetails.video_url);
@@ -65,7 +65,7 @@ bot.on("message", async message => {
                 return true;
             }
             serverQueue.songs.push(song);
-            message.reply('🎶 Đã yêu cầu: `' + song.title + '` 🎶');
+            message.reply('🎶 **Đã yêu cầu:** __`' + song.title + '`__ 🎶');
         }
 
         if (command === 'stop') {
@@ -111,15 +111,15 @@ bot.on("message", async message => {
             message.reply('➿ Bật lặp: `' + serverQueue.songs[0].title + '` ➿');
         }
 
-        if (command === 'queue') {
+        if (command === 'playlist') {
             if (!serverQueue) {
-                message.reply('🎼 Hiện danh sách trống! 🎼');
+                message.reply('🎼 Danh sách phát trống! 🎼');
                 return false;
             }
             let result = serverQueue.songs.map((song, i) => {
                 return `${(i == 0) ? `\n🎧 **Đang phát:** __` : `🎧 **${i}.** __`} ${song.title}__ 🎧`
             }).join('\n');
-            message.reply(result);
+            message.channel.send(result);
         }
     }
 });
