@@ -65,7 +65,7 @@ bot.on("message", async message => {
                 return true;
             }
             serverQueue.songs.push(song);
-            message.reply('🎶 **Đã yêu cầu:** __`' + song.title + '`__ 🎶');
+            message.reply('🎶 **Đã yêu cầu:** __' + song.title + '__ 🎶');
         }
 
         if (command === 'stop') {
