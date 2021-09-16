@@ -118,7 +118,7 @@ bot.on("message", async message => {
 
         if (command === 'queue') {
             if (!serverQueue) {
-                message.reply('Hiện danh sách trống!');
+                message.reply('e!add 3595-failed Hiện danh sách trống! e!add 3595-failed');
                 return false;
             }
             let result = serverQueue.songs.map((song, i) => {
@@ -145,7 +145,7 @@ async function playSong(message) {
     });
     let dispatcher = serverQueue.connection.play(audio);
     dispatcher.setVolume(serverQueue.volume / 100);
-    message.channel.send('🎶 Starting: `' + song.title + '` 🎶');
+    message.channel.send('🎶 Đang phát: `' + song.title + '` 🎶');
     dispatcher.on('finish', () => {
         if (!serverQueue.repeat) serverQueue.songs.shift();
         playSong(message);
