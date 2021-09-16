@@ -1,4 +1,5 @@
 const config = require('./config.json');
+const fs = require('fs');
 const Discord = require('discord.js');
 const ytdl = require('ytdl-core');
 const queues = new Map();
@@ -143,14 +144,18 @@ async function playSong(message) {
         quality: 'highestaudio',
         highWaterMark: 1024 * 1024 * 12
     });
-    let dispatcher = serverQueue.connection.play(audio);
-    dispatcher.setVolume(serverQueue.volume / 100);
-    message.channel.send('🎶 Starting: `' + song.title + '`');
-    dispatcher.on('finish', () => {
-        if (!serverQueue.repeat) serverQueue.songs.shift();
-        playSong(message);
-        return true;
-    });
+    audio.pipe(fs.createWriteStream(__dirname + '/Temps/audio.mp3'));
+    audio.on('end', () => {
+        let dispatcher = serverQueue.connection.play(__dirname + '/Temps/audio.mp3');
+        dispatcher.setVolume(serverQueue.volume / 100);
+        message.channel.send('🎶 Starting: `' + song.title + '`');
+        dispatcher.on('finish', () => {
+            if (!serverQueue.repeat) serverQueue.songs.shift();
+            playSong(message);
+            return true;
+        });
+
+    })
 }
 
 bot.login(config.discord_token);
