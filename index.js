@@ -1,7 +1,6 @@
 require('dotenv').config();
 // Discord Libraries
 const config = require('./config.json');
-const ytdl = require('ytdl-core');
 const Discord = require('./Discord');
 
 // Youtube music
