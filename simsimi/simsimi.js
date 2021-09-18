@@ -6,6 +6,7 @@ const simsimi = {
         const data = await response.json();
         
         for (const msg of data.messages) {
+            // Sim trả lời
             message.reply(msg.text);
         }
     }
