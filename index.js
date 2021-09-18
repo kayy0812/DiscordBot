@@ -13,8 +13,8 @@ Discord.onMessage(async message => {
         loadMusic(config, args, message);
     }
     if (message.content.startsWith(config.simPrefix)) {
-        const args = message.content.slice(config.simPrefix.length).trim();
-        console.log(args)
-        loadSimsimi(config, args, message);
+        const input = message.content.slice(config.simPrefix.length).trim();
+        // console.log(args)
+        loadSimsimi(config, input, message);
     }
 });

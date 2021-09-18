@@ -28,9 +28,10 @@ class Queue {
 }
 
 class Song {
-    constructor(title, url) {
+    constructor(title, url, length) {
         this.title = title;
         this.url = url;
+        this.length = length;
     }
 }
 
@@ -54,12 +55,8 @@ const ytMusic = {
                 }
             }
 
-            let video = await ytdl.getInfo(url);
-            if (!video) {
-                message.reply('Nhập chính xác đường dẫn!');
-                return false;
-            }
-            const song = new Song(video.videoDetails.title, video.videoDetails.video_url);
+            let { videoDetails } = await ytdl.getInfo(url);
+            const song = new Song(videoDetails.title, videoDetails.video_url, videoDetails.lengthSeconds);
             if (!serverQueue) {
                 let queue = new Queue(voiceChannel);
                 playlist.set(message.guild.id, queue);
@@ -70,7 +67,7 @@ const ytMusic = {
                 return true;
             }
             serverQueue.songs.push(song);
-            message.reply('🎶 **Đã yêu cầu:** __' + song.title + '__ 🎶');
+            message.reply('🎶 **Đã yêu cầu:** __' + song.title + '__ 🎶 **(' + song.length + ' giây)**');
         }
 
         if (command === 'clear') {
@@ -99,7 +96,7 @@ const ytMusic = {
         if (command === 'playlist') {
             if (!serverQueue) return false;
             let result = serverQueue.songs.map((song, i) => {
-                return `${(i == 0) ? `\n🎧 **Đang phát:** __` : `🎧 **${i}.** __`} ${song.title}__ 🎧`
+                return `${(i == 0) ? `\n🎧 **Đang phát:** __` : `🎧 **${i}.** __`} ${song.title}__ 🎧 **(${song.length} giây)**`
             }).join('\n');
             message.channel.send(result);
         }
@@ -122,7 +119,7 @@ async function playSong(message) {
     });
     let dispatcher = serverQueue.connection.play(audio);
     dispatcher.setVolume(serverQueue.volume / 100);
-    let playing = await message.channel.send('🎧 **Đang phát:** __' + song.title + '__ 🎧');
+    let playing = await message.channel.send('🎧 **Đang phát:** __' + song.title + '__ 🎧 **(' + song.length + ' giây)**');
     dispatcher.on('finish', () => {
         if (!serverQueue.repeat) serverQueue.songs.shift();
         playSong(message);
