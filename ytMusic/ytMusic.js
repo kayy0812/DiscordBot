@@ -1,4 +1,5 @@
 const ytdl = require('ytdl-core');
+const { MessageEmbed } = require('discord.js');
 const playlist = new Map();
 
 class Queue {
@@ -119,7 +120,7 @@ async function playSong(message) {
     });
     let dispatcher = serverQueue.connection.play(audio);
     dispatcher.setVolume(serverQueue.volume / 100);
-    let playing = await message.channel.send('🎧 **Đang phát:** __' + song.title + '__ 🎧 **(' + song.length + ' giây)**');
+    await message.channel.send('🎧 **Đang phát:** __' + song.title + '__ 🎧 **(' + song.length + ' giây)**');
     dispatcher.on('finish', () => {
         if (!serverQueue.repeat) serverQueue.songs.shift();
         playSong(message);

@@ -1,12 +1,16 @@
-const { Client } = require('discord.js');
-const client = new Client();
+const { Client, Intents} = require('discord.js');
+const client = new Client({ 
+    intents: [
+        Intents.FLAGS.GUILDS
+    ] 
+});
 const Discord = {
     onMessage: function(response) {
         client.on('message', response);
     },
     setToken: function (token) {
         client.login(token);
-        client.on('ready',  function () {
+        client.once('ready',  function () {
             console.log('Dang su dung [' + client.user.tag + ']')
         });
     }
