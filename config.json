@@ -1,5 +1,5 @@
 {
-	"sim_prefix": "!sim",
+	"simPrefix": "!s",
 	"musicPrefix": "!music",
 	"musicChannelName": "Music",
 	"musicChannelPerms": [
