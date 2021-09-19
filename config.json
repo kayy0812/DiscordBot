@@ -1,6 +1,6 @@
 {
-	"simPrefix": "!s",
-	"musicPrefix": "!music",
+	"simPrefix": "/sim",
+	"musicPrefix": "/music",
 	"musicChannelName": "Music",
 	"musicChannelPerms": [
 		"SPEAK",

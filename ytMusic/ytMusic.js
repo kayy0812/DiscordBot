@@ -1,5 +1,4 @@
 const ytdl = require('ytdl-core');
-const { MessageEmbed } = require('discord.js');
 const { 
     joinVoiceChannel, 
     createAudioPlayer, 
@@ -50,53 +49,60 @@ const ytMusic = {
         let serverQueue = playlist.get(message.guild.id);
         if (command === 'play') {
             let voiceChannel = message.member.voice.channel;
-            let permissions = voiceChannel.permissionsFor(message.client.user);
-            let url = args.slice(1).join(' ');
-
+            
             if (!voiceChannel || voiceChannel.name !== config.musicChannelName) {
                 message.reply('Vào kênh `🎶' + config.musicChannelName + '🎶` để có thể nghe nhạc!');
                 return false;
             }
-
+            
+            let permissions = voiceChannel.permissionsFor(message.client.user);
             for (var value of config.musicChannelPerms) {
                 if (!permissions.has(value)) {
                     message.reply('Chưa cấp quyền `' + value + '` vào kênh phát này!');
                     return false;
                 }
             }
+            
+            let url = args.slice(1).join(' ');
 
-            let { videoDetails } = await ytdl.getInfo(url);
-            const song = new Song(videoDetails.title, videoDetails.video_url, videoDetails.lengthSeconds);
+            try {
+                let { videoDetails } = await ytdl.getInfo(url);
 
-            if (!serverQueue) {
-                let queue = new Queue(voiceChannel);
+                const song = new Song(videoDetails.title, videoDetails.video_url, videoDetails.lengthSeconds);
 
-                playlist.set(message.guild.id, queue);
-                queue.songs.push(song);
-                
-                let connection = joinVoiceChannel({
-                    channelId: message.member.voice.channel.id,
-                    guildId: message.guild.id,
-                    adapterCreator: message.guild.voiceAdapterCreator
-                })
-                queue.connection = connection;
+                if (!serverQueue) {
+                    let queue = new Queue(voiceChannel);
 
-                let player = createAudioPlayer({
-                    behaviors: {
-                        noSubscriber: NoSubscriberBehavior.Pause,
-                    },
-                });
-                queue.player = player;
+                    playlist.set(message.guild.id, queue);
+                    queue.songs.push(song);
+                    
+                    let connection = joinVoiceChannel({
+                        channelId: message.member.voice.channel.id,
+                        guildId: message.guild.id,
+                        adapterCreator: message.guild.voiceAdapterCreator
+                    })
+                    queue.connection = connection;
 
-                const play = playSong(message);
-                if (play) {
-                    await message.reply('🎧 **Đang phát:** __' + song.title + '__ 🎧 **(' + song.length + ' giây)**');
+                    let player = createAudioPlayer({
+                        behaviors: {
+                            noSubscriber: NoSubscriberBehavior.Pause,
+                        },
+                    });
+                    queue.player = player;
+
+                    const play = playSong(message);
+                    if (play) {
+                        await message.reply('🎧 **Đang phát:** __' + song.title + '__ 🎧 **(' + song.length + ' giây)**');
+                    }
+                    return true;
                 }
-                return true;
+                serverQueue.songs.push(song);
+                message.reply('🎶 **Đã yêu cầu:** __' + song.title + '__ 🎶 **(' + song.length + ' giây)**');
+            } catch(error) {
+                message.reply('ID / URL không tồn tại');
+                return false;
             }
 
-            serverQueue.songs.push(song);
-            message.reply('🎶 **Đã yêu cầu:** __' + song.title + '__ 🎶 **(' + song.length + ' giây)**');
         }
 
         if (command === 'clear') {

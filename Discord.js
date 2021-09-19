@@ -1,4 +1,4 @@
-const { Client, Intents} = require('discord.js');
+const { Client, Intents, MessageEmbed} = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
@@ -14,9 +14,11 @@ const Discord = {
     onInteraction: function(response) {
         client.on('interactionCreate', response);
     },
+    
     onMessage: function(response) {
         client.on('messageCreate', response);
     },
+
     setToken: function (config, token) {
         client.login(token);
 
@@ -25,15 +27,6 @@ const Discord = {
         });
 
         const commands = [
-            new SlashCommandBuilder().setName('music')
-                .setDescription('Trình phát mp3 từ youtube')
-                .addStringOption(option => option.setName('play')
-                    .setDescription('Yêu cầu nhạc'))
-                .addBooleanOption(option => option.setName('playlist')
-                    .setDescription('Danh sách phát'))
-                .addBooleanOption(option => option.setName('clear')
-                    .setDescription('Tắt trình phát nhạc')),
-
             new SlashCommandBuilder().setName('sim')
                 .setDescription('Chat with simsimi command!')
                 .addStringOption(option => option.setName('msg')

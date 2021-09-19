@@ -10,11 +10,6 @@ Discord.setToken(config, process.env.TOKEN);
 Discord.onInteraction(async interaction => {
     if (!interaction.isCommand()) return;
     const { commandName } = interaction;
-    if (commandName === 'music') {
-        Discord.onMessage(async message => {
-            loadMusic(config, message);
-        });
-    }
     if (commandName === 'sim') {
         if (!interaction.options.getString('msg')) {
             interaction.reply('Nhấp vào biến [msg] phía trên khi viết lệnh /sim')
@@ -31,3 +26,7 @@ Discord.onMessage(async message => {
         loadMusic(config, args, message);
     }
 });
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
