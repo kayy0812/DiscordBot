@@ -14,5 +14,5 @@
 - All done
 
 ## Usage
-- Music from youtube: !music play url/id | playlist | pause | resume | loop
-- Simsimi API from (https://api.simsimi.net/): /sim msg: messages
+- Music from youtube: `!music play url/id | playlist | pause | resume | loop`
+- Simsimi API from (https://api.simsimi.net/): `/sim msg: messages`
