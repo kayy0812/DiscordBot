@@ -4,13 +4,17 @@
   "description": "A Discord BOT!",
   "main": "index.js",
   "dependencies": {
+    "@discordjs/builders": "^0.6.0",
+    "@discordjs/rest": "^0.1.0-canary.0",
     "@discordjs/voice": "^0.6.0",
+    "discord-api-types": "^0.23.1",
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
     "events": "^3.2.0",
     "express": "^4.17.1",
     "ffmpeg": "0.0.4",
     "ffmpeg-static": "^4.2.7",
+    "libsodium-wrappers": "^0.7.9",
     "node-fetch": "^3.0.0",
     "opus": "0.0.0",
     "opusscript": "0.0.8",
@@ -18,7 +22,6 @@
     "pm2": "^5.1.1",
     "ytdl-core": "^4.9.1"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "pm2 start index.js --name  --watch"

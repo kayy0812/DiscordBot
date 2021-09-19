@@ -5,5 +5,7 @@
 	"musicChannelPerms": [
 		"SPEAK",
 		"CONNECT"
-	]
+	],
+	"guildId": "887356911635283980",
+	"clientBotId": "887360278340206643"
 }
