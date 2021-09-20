@@ -66,45 +66,45 @@ const ytMusic = {
             let url = args.slice(1).join(' ');
 
             try {
-                let { videoDetails } = await ytdl.getInfo(url);
-
-                const song = new Song(videoDetails.title, videoDetails.video_url, videoDetails.lengthSeconds);
-
-                if (!serverQueue) {
-                    let queue = new Queue(voiceChannel);
-
-                    playlist.set(message.guild.id, queue);
-                    queue.songs.push(song);
-                    
-                    let connection = joinVoiceChannel({
-                        channelId: message.member.voice.channel.id,
-                        guildId: message.guild.id,
-                        adapterCreator: message.guild.voiceAdapterCreator
-                    })
-                    queue.connection = connection;
-
-                    let player = createAudioPlayer({
-                        behaviors: {
-                            noSubscriber: NoSubscriberBehavior.Pause,
-                        },
-                    });
-                    queue.player = player;
-
-                    const play = playSong(message);
-                    if (play) {
-                        await message.reply('🎧 **Đang phát:** __' + song.title + '__ 🎧 **(' + song.length + ' giây)**');
-                    }
-                    return true;
-                }
-                serverQueue.songs.push(song);
-                message.reply('🎶 **Đã yêu cầu:** __' + song.title + '__ 🎶 **(' + song.length + ' giây)**');
+                await ytdl.getInfo(url);
             } catch(error) {
                 message.reply('ID / URL không tồn tại');
                 return false;
             }
 
-        }
+            let { videoDetails } = await ytdl.getInfo(url);
 
+            const song = new Song(videoDetails.title, videoDetails.video_url, videoDetails.lengthSeconds);
+
+            if (!serverQueue) {
+                let queue = new Queue(voiceChannel);
+
+                playlist.set(message.guild.id, queue);
+                queue.songs.push(song);
+                
+                let connection = joinVoiceChannel({
+                    channelId: message.member.voice.channel.id,
+                    guildId: message.guild.id,
+                    adapterCreator: message.guild.voiceAdapterCreator
+                })
+                queue.connection = connection;
+
+                let player = createAudioPlayer({
+                    behaviors: {
+                        noSubscriber: NoSubscriberBehavior.Pause,
+                    },
+                });
+                queue.player = player;
+
+                const play = playSong(message);
+                if (play) {
+                    await message.reply('🎧 **Đang phát:** __' + song.title + '__ 🎧 **(' + song.length + ' giây)**');
+                }
+                return true;
+            }
+            serverQueue.songs.push(song);
+            message.reply('🎶 **Đã yêu cầu:** __' + song.title + '__ 🎶 **(' + song.length + ' giây)**');
+        }
         if (command === 'clear') {
             if (!serverQueue) return false;
             serverQueue.songs = [];
