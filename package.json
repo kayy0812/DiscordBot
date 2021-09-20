@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A Discord BOT!",
   "main": "index.js",
+  "engines": {
+    "node": "16.x"
+  },
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",
@@ -19,12 +22,11 @@
     "opus": "0.0.0",
     "opusscript": "0.0.8",
     "os": "^0.1.1",
-    "pm2": "^5.1.1",
     "ytdl-core": "^4.9.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "pm2 start index.js --name  --watch"
+    "start": "node index"
   },
   "author": "kayy0812",
   "license": "ISC"
