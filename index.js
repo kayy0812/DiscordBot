@@ -3,6 +3,16 @@ require('dotenv').config();
 const config = require('./config.json');
 const Discord = require('./Discord');
 
+// Heroku suporter
+const { wakeDyno } = require('heroku-keep-awake');
+
+// Express
+const express = require('express');
+const app = express();
+app.listen(process.env.PORT || 3000, () => {
+    wakeDyno(process.env.HEROKU_APP);
+});
+
 // Youtube music
 const { loadMusic } = require('./ytMusic/ytMusic');
 const { loadSimsimi } = require('./simsimi/simsimi');
@@ -20,13 +30,8 @@ Discord.onInteraction(async interaction => {
 });
 
 Discord.onMessage(async message => {
-    // console.log(message)
     if (message.content.startsWith(config.musicPrefix)) {
         const args = message.content.slice(config.musicPrefix.length).trim().split(/ +/);
         loadMusic(config, args, message);
     }
 });
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
