@@ -1,7 +1,7 @@
 require('dotenv').config();
 // Discord Libraries
 const { prefix, commands } = require('./config.json');
-const { onMessage, setToken } = require('./discord');
+const { onMessage, setToken } = require('./Discord');
 
 // Heroku suporter
 const { wakeDyno } = require('heroku-keep-awake');
