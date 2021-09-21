@@ -1,7 +1,7 @@
 require('dotenv').config();
 // Discord Libraries
-const config = require('./config.json');
-const Discord = require('./Discord');
+const { prefix, commands } = require('./config.json');
+const { onMessage, setToken } = require('./discord');
 
 // Heroku suporter
 const { wakeDyno } = require('heroku-keep-awake');
@@ -13,25 +13,51 @@ app.listen(process.env.PORT || 3000, () => {
     wakeDyno(process.env.HEROKU_APP);
 });
 
-// Youtube music
-const { loadMusic } = require('./ytMusic/ytMusic');
-const { loadSimsimi } = require('./simsimi/simsimi');
-Discord.setToken(config, process.env.TOKEN);
-Discord.onInteraction(async interaction => {
-    if (!interaction.isCommand()) return;
-    const { commandName } = interaction;
-    if (commandName === 'sim') {
-        if (!interaction.options.getString('msg')) {
-            interaction.reply('Nhấp vào biến [msg] phía trên khi viết lệnh /sim')
-            return false;
-        }
-        loadSimsimi(interaction.options.getString('msg'), interaction);
-    }
-});
+// Login to Discord
+setToken(process.env.TOKEN);
 
-Discord.onMessage(async message => {
-    if (message.content.startsWith(config.musicPrefix)) {
-        const args = message.content.slice(config.musicPrefix.length).trim().split(/ +/);
-        loadMusic(config, args, message);
+// Features Commands
+const { 
+    playCommand,
+    playlistCommand,
+    pauseCommand,
+    resumeCommand,
+    loopCommand
+} = require('./ytMusic/ytMusic');
+const { 
+    simCommand 
+} = require('./simsimi/simsimi');
+
+// Start message
+onMessage(async message => {
+    
+    if (message.content.startsWith(prefix + commands.sim)) {
+        const msg = message.content.slice(prefix.length + commands.sim.length).trim();
+        simCommand(msg, message);
+    }
+
+    if (message.content.startsWith(prefix + commands.play)) {
+        const data = message.content.slice(prefix.length + commands.play.length).trim().split(/ +/);
+        playCommand(data[0], message);
+    }
+
+    if (message.content.startsWith(prefix + commands.clear)) {
+        clearCommand(message);
+    }
+
+    if (message.content.startsWith(prefix + commands.loop)) {
+        loopCommand(message);
+    }
+
+    if (message.content.startsWith(prefix + commands.playlist)) {
+        playlistCommand(message);
+    }
+
+    if (message.content.startsWith(prefix + commands.pause)) {
+        pauseCommand(message);
+    }
+
+    if (message.content.startsWith(prefix + commands.resume)) {
+        resumeCommand(message);
     }
 });

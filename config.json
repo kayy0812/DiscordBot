@@ -1,11 +1,17 @@
 {
-	"simPrefix": "/sim",
-	"musicPrefix": "/music",
+	"prefix": "z!",
+	"commands": {
+		"sim": "sim",
+		"play": "play",
+		"clear": "clear",
+		"playlist": "playlist",
+		"pause": "pause",
+		"resume": "resume",
+		"loop": "loop"
+	},
 	"musicChannelName": "Music",
 	"musicChannelPerms": [
 		"SPEAK",
 		"CONNECT"
-	],
-	"guildId": "887356911635283980",
-	"clientBotId": "887360278340206643"
+	]
 }
