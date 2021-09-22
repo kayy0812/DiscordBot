@@ -41,6 +41,10 @@ onMessage(async message => {
         playCommand(data[0], message);
     }
 
+    if (message.content.startsWith(prefix + commands.next)) {
+        nextCommand(message);
+    }
+
     if (message.content.startsWith(prefix + commands.clear)) {
         clearCommand(message);
     }

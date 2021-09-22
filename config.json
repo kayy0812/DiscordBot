@@ -5,11 +5,12 @@
 		"play": "play",
 		"clear": "clear",
 		"playlist": "playlist",
+		"next": "next",
 		"pause": "pause",
 		"resume": "resume",
 		"loop": "loop"
 	},
-	"musicChannelName": "Music",
+	"musicChannelName": "nghe-nhac",
 	"musicChannelPerms": [
 		"SPEAK",
 		"CONNECT"
