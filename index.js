@@ -39,8 +39,8 @@ onMessage(async message => {
     }
 
     if (content.split(' ')[0] === prefix + commands.play) {
-        const data = message.content.slice(prefix.length + commands.play.length).trim().split(/ +/);
-        playCommand(data[0], message);
+        const data = message.content.slice(prefix.length + commands.play.length).trim();
+        playCommand(data, message);
     }
 
     if (content.split(' ')[0] === prefix + commands.next) {
