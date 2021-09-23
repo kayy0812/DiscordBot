@@ -1,4 +1,4 @@
-# DiscordBot
+# DiscordBot with Nodejs
 
 ## Information
 - Nodejs: >= 16.x
@@ -14,5 +14,5 @@
 - All done
 
 ## Usage
-- Music from youtube: `!music play url/id | playlist | pause | resume | loop`
-- Simsimi API from (https://api.simsimi.net/): `/sim msg: messages`
+- Music: `z!(play [url/id] || list || pause || resume || loop)`
+- Simsimi (https://api.simsimi.net/): `z!sim [msg]`
