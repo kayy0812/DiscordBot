@@ -1,3 +1,4 @@
+const { setActivity } = require('../Discord')
 const ytdl = require('ytdl-core');
 const { musicChannelName, musicChannelPerms } = require('../config.json');
 const { 
@@ -48,47 +49,57 @@ const ytMusic = {
     clearCommand: function (message) {
         const serverQueue = playlist.get(message.guild.id);
         if (!serverQueue) return false;
-        serverQueue.songs = [];
         serverQueue.player.stop();
+        serverQueue.songs = [];
+        return true;
     },
 
     nextCommand: function (message) {
         const serverQueue = playlist.get(message.guild.id);
         if (!serverQueue) return false;
-        serverQueue.player.stop();
+        if (serverQueue.songs.length > 1) {
+            serverQueue.player.stop();
+            return true;
+        }
+        message.reply('Không thể chuyển bài tiếp')
+        return false;
     },
 
     pauseCommand: function (message) {
         const serverQueue = playlist.get(message.guild.id);
         if (!serverQueue) return false;
         serverQueue.player.pause();
+        return true;
     },
 
     resumeCommand: function (message) {
         const serverQueue = playlist.get(message.guild.id);
         if (!serverQueue) return false;
         serverQueue.player.unpause();
+        return true;
     },
 
     loopCommand: function (message) {
         const serverQueue = playlist.get(message.guild.id);
-        if (!serverQueue) return false;
+        if (!serverQueue) return;
         if (serverQueue.repeat) {
             serverQueue.setLoop(false);
             message.reply('➿ Tắt lặp: `' + serverQueue.songs[0].title + '` ➿');
-            return true;
+            return false;
         }
         serverQueue.setLoop(true);
         message.reply('➿ Bật lặp: `' + serverQueue.songs[0].title + '` ➿');
+        return true;
     },
 
-    playlistCommand: function (message) {
+    listCommand: function (message) {
         const serverQueue = playlist.get(message.guild.id);
         if (!serverQueue) return false;
         let result = serverQueue.songs.map((song, i) => {
             return `${(i == 0) ? `\n🎧 **Đang phát:** __` : `🎧 **${i}.** __`} ${song.title}__ 🎧 **(${song.length} giây)**`
         }).join('\n');
         message.reply(result);
+        return true;
     },
 
     playCommand: async function (data, message) {
@@ -141,7 +152,7 @@ const ytMusic = {
 
             const play = playSong(message);
             if (play) {
-                await message.reply('🎧 **Đang phát:** __' + song.title + '__ 🎧 **(' + song.length + ' giây)**');
+                message.reply('🎧 **Đang phát:** __' + song.title + '__ 🎧 **(' + song.length + ' giây)**');
             }
             return true;
         }
@@ -150,7 +161,7 @@ const ytMusic = {
     }
 }
 
-async function playSong(message) {
+function playSong(message) {
     const serverQueue = playlist.get(message.guild.id);
 
     if (!serverQueue) return;
@@ -159,26 +170,36 @@ async function playSong(message) {
         serverQueue.connection.destroy();
         playlist.delete(message.guild.id);
         message.reply("⏹ Hết dữ liệu yêu cầu ⏹");
+        setActivity('your profile!', { 
+            type: "WATCHING"
+        });
         return false;
     }
 
     let song = serverQueue.songs[0];
     let audio = ytdl(song.url, {
-        quality: 'highestaudio',
-        highWaterMark: 1024 * 1024 * 12,
+        quality: 'lowestaudio',
         dlChunkSize: 0
     });
 
-    const resource = createAudioResource(audio, { inlineVolume: true });
+    const resource = createAudioResource(audio, { 
+        inlineVolume: true 
+    });
     resource.volume.setVolume(serverQueue.volume / 100);
 
     serverQueue.player.play(resource);
     serverQueue.connection.subscribe(serverQueue.player);
-    serverQueue.player.on(AudioPlayerStatus.Idle, async function () {
+    serverQueue.player.on(AudioPlayerStatus.Idle, function () {
         if (!serverQueue.repeat) serverQueue.songs.shift();
         playSong(message);
         return true;
     });
+    serverQueue.player.on(AudioPlayerStatus.Playing, function () {
+        setActivity('music: ' + song.title, {
+            type: "LISTENING"
+        });
+    });
     return true;
 }
+
 module.exports = ytMusic;

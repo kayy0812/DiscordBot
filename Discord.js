@@ -21,8 +21,15 @@ const discord = {
     setToken: function (token) {
         client.login(token);
         client.once('ready', function () {
-            console.log('Dang su dung [' + client.user.tag + ']')
+            console.log('Dang su dung [' + client.user.tag + ']');
+            client.user.setActivity("your profile!", { 
+                type: "WATCHING" 
+            });
         });
+    },
+
+    setActivity: function (description, activity) {
+        client.user.setActivity(description, activity);
     }
 }
 

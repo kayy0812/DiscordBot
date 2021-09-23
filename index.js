@@ -19,9 +19,11 @@ setToken(process.env.TOKEN);
 // Features Commands
 const { 
     playCommand,
-    playlistCommand,
+    listCommand,
     pauseCommand,
     resumeCommand,
+    nextCommand,
+    clearCommand,
     loopCommand
 } = require('./ytMusic/ytMusic');
 const { 
@@ -30,38 +32,38 @@ const {
 
 // Start message
 onMessage(async message => {
-    
-    if (message.content.startsWith(prefix + commands.sim)) {
-        const msg = message.content.slice(prefix.length + commands.sim.length).trim();
+    const content = message.content;
+    if (content.split(' ')[0] === prefix + commands.sim) {
+        const msg = content.slice(prefix.length + commands.sim.length).trim();
         simCommand(msg, message);
     }
 
-    if (message.content.startsWith(prefix + commands.play)) {
+    if (content.split(' ')[0] === prefix + commands.play) {
         const data = message.content.slice(prefix.length + commands.play.length).trim().split(/ +/);
         playCommand(data[0], message);
     }
 
-    if (message.content.startsWith(prefix + commands.next)) {
+    if (content.split(' ')[0] === prefix + commands.next) {
         nextCommand(message);
     }
 
-    if (message.content.startsWith(prefix + commands.clear)) {
+    if (content.split(' ')[0] === prefix + commands.clear) {
         clearCommand(message);
     }
 
-    if (message.content.startsWith(prefix + commands.loop)) {
+    if (content.split(' ')[0] === prefix + commands.loop) {
         loopCommand(message);
     }
 
-    if (message.content.startsWith(prefix + commands.playlist)) {
-        playlistCommand(message);
+    if (content.split(' ')[0] === prefix + commands.list) {
+        listCommand(message);
     }
 
-    if (message.content.startsWith(prefix + commands.pause)) {
+    if (content.split(' ')[0] === prefix + commands.pause) {
         pauseCommand(message);
     }
 
-    if (message.content.startsWith(prefix + commands.resume)) {
+    if (content.split(' ')[0] === prefix + commands.resume) {
         resumeCommand(message);
     }
 });

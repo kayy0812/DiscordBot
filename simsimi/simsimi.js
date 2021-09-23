@@ -3,6 +3,7 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 const simsimi = {
     simCommand: async function (msg, message) {
         try {
+            console.log(msg)
             const response = await fetch(`https://api.simsimi.net/v2/?text=${msg}&lc=vi&cf=true`, {
                 method: 'GET'
             });
