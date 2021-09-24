@@ -145,7 +145,7 @@ const ytMusic = {
 
             let player = createAudioPlayer({
                 behaviors: {
-                    noSubscriber: NoSubscriberBehavior.Pause,
+                    noSubscriber: NoSubscriberBehavior.Pause
                 }
             });
             queue.player = player;
