@@ -1,10 +1,26 @@
 require('dotenv').config();
 // Discord Libraries
-const { prefix, commands } = require('./config.json');
-const { onMessage, setToken } = require('./Discord');
+const { 
+    prefix, 
+    commands,
+    z_music
+} = require('./config.json');
+const { 
+    onMessage,
+    onAddReaction,
+    setToken,
+    channelExisted,
+    isCommand,
+    isBotChat,
+    withChannel,
+    createMusicCategory,
+    getDashboardMusic
+} = require('./Client');
 
 // Heroku suporter
-const { wakeDyno } = require('heroku-keep-awake');
+const {
+    wakeDyno 
+} = require('heroku-keep-awake');
 
 // Express
 const express = require('express');
@@ -25,45 +41,37 @@ const {
     nextCommand,
     clearCommand,
     loopCommand
-} = require('./ytMusic/ytMusic');
-const { 
+} = require('./z-music/main');
+const {
     simCommand 
-} = require('./simsimi/simsimi');
+} = require('./z-simsimi/main');
 
 // Start message
 onMessage(async message => {
     const content = message.content;
-    if (content.split(' ')[0] === prefix + commands.sim) {
+    if (isCommand(message, commands.sim)) {
         const msg = content.slice(prefix.length + commands.sim.length).trim();
         simCommand(msg, message);
     }
 
-    if (content.split(' ')[0] === prefix + commands.play) {
-        const data = message.content.slice(prefix.length + commands.play.length).trim();
+    if (isCommand(message, commands.play)) {
+        const data = content.slice(prefix.length + commands.play.length).trim();
         playCommand(data, message);
     }
 
-    if (content.split(' ')[0] === prefix + commands.next) {
-        nextCommand(message);
+    if (isCommand(message, z_music.command.create)) {
+        if (!channelExisted(message, z_music.category)) {
+            createMusicCategory(message, z_music);
+            return true;
+        }
+        message.delete();
+        return false;
     }
 
-    if (content.split(' ')[0] === prefix + commands.clear) {
-        clearCommand(message);
-    }
-
-    if (content.split(' ')[0] === prefix + commands.loop) {
-        loopCommand(message);
-    }
-
-    if (content.split(' ')[0] === prefix + commands.list) {
-        listCommand(message);
-    }
-
-    if (content.split(' ')[0] === prefix + commands.pause) {
-        pauseCommand(message);
-    }
-
-    if (content.split(' ')[0] === prefix + commands.resume) {
-        resumeCommand(message);
+    // Xoá mọi tin nhắn được đăng trong kênh điều khiển âm nhạc (trừ bot)
+    if (isBotChat(message)) {
+        if (withChannel(message, z_music.textChannel)) {
+            message.delete();
+        }
     }
 });
