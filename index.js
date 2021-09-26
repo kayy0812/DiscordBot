@@ -1,26 +1,10 @@
 require('dotenv').config();
 // Discord Libraries
-const { 
-    prefix, 
-    commands,
-    z_music
-} = require('./config.json');
-const { 
-    onMessage,
-    onAddReaction,
-    setToken,
-    channelExisted,
-    isCommand,
-    isBotChat,
-    withChannel,
-    createMusicCategory,
-    getDashboardMusic
-} = require('./Client');
+const { prefix, commands } = require('./config.json');
+const { onMessage, setToken } = require('./Discord');
 
 // Heroku suporter
-const {
-    wakeDyno 
-} = require('heroku-keep-awake');
+const { wakeDyno } = require('heroku-keep-awake');
 
 // Express
 const express = require('express');
@@ -41,37 +25,45 @@ const {
     nextCommand,
     clearCommand,
     loopCommand
-} = require('./z-music/main');
-const {
+} = require('./ytMusic/ytMusic');
+const { 
     simCommand 
-} = require('./z-simsimi/main');
+} = require('./simsimi/simsimi');
 
 // Start message
 onMessage(async message => {
     const content = message.content;
-    if (isCommand(message, commands.sim)) {
+    if (content.split(' ')[0] === prefix + commands.sim) {
         const msg = content.slice(prefix.length + commands.sim.length).trim();
         simCommand(msg, message);
     }
 
-    if (isCommand(message, commands.play)) {
-        const data = content.slice(prefix.length + commands.play.length).trim();
+    if (content.split(' ')[0] === prefix + commands.play) {
+        const data = message.content.slice(prefix.length + commands.play.length).trim();
         playCommand(data, message);
     }
 
-    if (isCommand(message, z_music.command.create)) {
-        if (!channelExisted(message, z_music.category)) {
-            createMusicCategory(message, z_music);
-            return true;
-        }
-        message.delete();
-        return false;
+    if (content.split(' ')[0] === prefix + commands.next) {
+        nextCommand(message);
     }
 
-    // Xoá mọi tin nhắn được đăng trong kênh điều khiển âm nhạc (trừ bot)
-    if (isBotChat(message)) {
-        if (withChannel(message, z_music.textChannel)) {
-            message.delete();
-        }
+    if (content.split(' ')[0] === prefix + commands.clear) {
+        clearCommand(message);
+    }
+
+    if (content.split(' ')[0] === prefix + commands.loop) {
+        loopCommand(message);
+    }
+
+    if (content.split(' ')[0] === prefix + commands.list) {
+        listCommand(message);
+    }
+
+    if (content.split(' ')[0] === prefix + commands.pause) {
+        pauseCommand(message);
+    }
+
+    if (content.split(' ')[0] === prefix + commands.resume) {
+        resumeCommand(message);
     }
 });

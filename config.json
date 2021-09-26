@@ -10,15 +10,7 @@
 		"resume": "resume",
 		"loop": "loop"
 	},
-	"z_music": {
-		"category": "zengine-music",
-		"voiceChannel": "z-play",
-		"textChannel": "z-controller",
-		"command": {
-			"join": "join",
-			"create": "create"
-		}
-	},
+	"musicChannelName": "nghe-nhac",
 	"musicChannelPerms": [
 		"SPEAK",
 		"CONNECT"
