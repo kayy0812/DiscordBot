@@ -1,18 +1,5 @@
 {
-	"prefix": "z!",
-	"commands": {
-		"sim": "sim",
-		"play": "play",
-		"clear": "clear",
-		"list": "list",
-		"next": "next",
-		"pause": "pause",
-		"resume": "resume",
-		"loop": "loop"
-	},
-	"musicChannelName": "nghe-nhac",
-	"musicChannelPerms": [
-		"SPEAK",
-		"CONNECT"
-	]
+    "token": "",
+	"prefix": "y!",
+	"musicChannelName": "nghe-nhac"
 }

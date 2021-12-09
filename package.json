@@ -1,7 +1,7 @@
 {
-  "name": "discordbot",
+  "name": "simple-discord-music",
   "version": "1.8.4",
-  "description": "Discord bot with Nodejs!",
+  "description": "A simple music bot!",
   "main": "index.js",
   "engines": {
     "node": "16.x"
@@ -11,13 +11,9 @@
     "@discordjs/opus": "^0.5.3",
     "@discordjs/rest": "^0.1.0-canary.0",
     "@discordjs/voice": "^0.6.0",
+    "discord-music-player": "^8.3.1",
     "discord.js": "^13.1.0",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
     "ffmpeg-static": "^4.2.7",
-    "heroku-keep-awake": "^1.1.2",
-    "node-fetch": "^3.0.0",
-    "tweetnacl": "^1.0.3",
     "ytdl-core": "^4.9.1"
   },
   "scripts": {
